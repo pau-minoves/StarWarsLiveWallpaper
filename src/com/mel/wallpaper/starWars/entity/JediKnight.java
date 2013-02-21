@@ -3,6 +3,7 @@ package com.mel.wallpaper.starWars.entity;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.util.debug.Debug;
 import org.andengine.util.math.MathUtils;
 
 import com.mel.entityframework.IMovable;
@@ -15,7 +16,7 @@ import com.mel.wallpaper.starWars.view.IJediAnimator;
 public class JediKnight extends Walker implements IMovable
 {
 	
-	public static final float DEFAULT_SPEED = 30;
+	public static final float DEFAULT_SPEED = 35;
 	public static final float MAX_JUMP_DISTANCE = 30;
 
 	protected Point duelTarget;
@@ -73,9 +74,13 @@ public class JediKnight extends Walker implements IMovable
 		
 		if(!isOnParringCooldown){
 			((IJediAnimator)this.animator).animateParry(this, destination);
-			
+
 			this.isOnParringCooldown = true;
-			TimerHelper.startTimer(this.position, 0.7f,  new ITimerCallback() {                      
+			
+			//TODO AG: Podriamos mejorar coordinacion de animacion/cooldown, si al llamar
+			//animateParry, pasaramos por parametro un IAnimationListener, para recivir
+			//el evento de "onAnimationFinished"
+			TimerHelper.startTimer(this.position, 0.6f,  new ITimerCallback() {                      
 				public void onTimePassed(final TimerHandler pTimerHandler)
 				{
 					isOnParringCooldown = false;
